@@ -16,17 +16,28 @@ open Cudf
 
 let pkg_compare p1 p2 =
   Pervasives.compare (p1.package, p1.version) (p2.package, p2.version)
+    [@ocaml.warning "-3"]
+
+let string_of_packages pkgs =
+  let o = IO.output_string () in
+  Cudf_printer.pp_io_packages o pkgs;
+  IO.close_out o
+
+let string_of_doc doc =
+  let o = IO.output_string () in
+  Cudf_printer.pp_io_doc o doc;
+  IO.close_out o
 
 let main () =
   let ic = open_in Sys.argv.(1) in
   let p = Cudf_parser.from_in_channel ic in
-  let pkgs, req = Cudf_parser.parse p in
+  let pre, pkgs, req = Cudf_parser.parse p in
   let pkgs' = List.fast_sort pkg_compare pkgs in
   let s =
     match req with
-      | None -> Cudf_printer.string_of_packages pkgs'
-      | Some req -> Cudf_printer.string_of_doc (pkgs', req)
+      | None -> string_of_packages pkgs'
+      | Some req -> string_of_doc (pre, pkgs', req)
   in
     print_endline s
 
-let _ = main ()
+let () = main ()
