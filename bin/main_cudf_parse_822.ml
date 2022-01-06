@@ -43,7 +43,7 @@ let main () =
   try
     let stanzas = Cudf_822_parser.doc_822 Cudf_822_lexer.token_822 lexbuf in
     pp_822 stanzas
-  with Parse_error_822 (msg, (startpos, endpos)) ->
+  with Parse_error_822 (_msg, (startpos, endpos)) ->
     failwith (sprintf "Parse error on file %s:%s--%s" !file_arg
 		(pp_lpos startpos) (pp_lpos endpos))
 

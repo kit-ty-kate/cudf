@@ -91,19 +91,19 @@ let parse_test ~parse_fun name =
 let parse_cudf_wrapper p =
   match Cudf_parser.parse p with
     | pre, pkgs, Some req -> pre, pkgs, req
-    | pre, pkgs, None -> raise (Cudf_parser.Parse_error ("", dummy_loc))
+    | _pre, _pkgs, None -> raise (Cudf_parser.Parse_error ("", dummy_loc))
 let parse_pkgs_wrapper p =
   match Cudf_parser.parse p with
-    | pre, pkgs, Some req -> raise (Cudf_parser.Parse_error ("", dummy_loc))
-    | pre, pkgs, None -> pkgs
+    | _pre, _pkgs, Some _req -> raise (Cudf_parser.Parse_error ("", dummy_loc))
+    | _pre, pkgs, None -> pkgs
 let load_cudf_wrapper p =
   match Cudf_parser.load p with
     | pre, pkgs, Some req -> pre, pkgs, req
-    | pre, pkgs, None -> raise (Cudf_parser.Parse_error ("", dummy_loc))
+    | _pre, _pkgs, None -> raise (Cudf_parser.Parse_error ("", dummy_loc))
 let load_pkgs_wrapper p =
   match Cudf_parser.load p with
-    | pre, pkgs, Some req -> raise (Cudf_parser.Parse_error ("", dummy_loc))
-    | pre, pkgs, None -> pkgs
+    | _pre, _pkgs, Some _req -> raise (Cudf_parser.Parse_error ("", dummy_loc))
+    | _pre, pkgs, None -> pkgs
 
 let parse_cudf_test = parse_test ~parse_fun:parse_cudf_wrapper
 let parse_pkgs_test = parse_test ~parse_fun:parse_pkgs_wrapper
@@ -361,8 +361,8 @@ let value_pp_suite =
   ]
 
 let cudf_pp_suite =
-  (** check that the pretty printing roundtrip (parse -> pp -> parse) returns
-      the same document than plain parsing *)
+  (* check that the pretty printing roundtrip (parse -> pp -> parse) returns
+     the same document than plain parsing *)
   let cudf_pp_roundtrip name =
     name >: TestCase (fun _ ->
       let (pre, univ, req) as doc = parse_cudf_test name in
@@ -377,12 +377,12 @@ let cudf_pp_suite =
 	  assert_equal doc doc')
 	())
   in
-  (** check that pretty printing of a document returns some canonical pretty
-      printed document (hence, this test is more fragile than
-      [cudf_pp_roundtrip] above) *)
+  (* check that pretty printing of a document returns some canonical pretty
+     printed document (hence, this test is more fragile than
+     [cudf_pp_roundtrip] above) *)
   let cudf_pp_canonical name =
     name >: TestCase (fun _ ->
-      let (pre, univ, req) as doc = parse_cudf_test name in
+      let (_pre, _univ, _req) as doc = parse_cudf_test name in
       let fname, oc = Filename.open_temp_file "libcudf-test." ".cudf" in
       finally
 	(fun () -> Sys.remove fname)
@@ -462,7 +462,7 @@ let status_filtering =
     "status projection returned an \"installed: false\" package" @?
       let _, univ, _ = load_cudf_test "legacy" in
       List.for_all
-        (fun { installed = i } -> i)
+        (fun { installed = i; _ } -> i)
         (get_packages (status univ)))
 
 let status_sizes =

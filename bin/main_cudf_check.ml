@@ -13,7 +13,6 @@
 open ExtLib
 open Printf
 
-open Cudf
 open Cudf_checker
 
 let cudf_arg = ref ""
@@ -71,14 +70,14 @@ let print_sol_info inst sol =
         false
 
 let pp_loc (start_pos, end_pos) =
-  let line { Lexing.pos_lnum = l } = l in
+  let line { Lexing.pos_lnum = l; _ } = l in
   if line start_pos = line end_pos
   then sprintf "line: %d" (line start_pos)
   else sprintf "lines: %d-%d" (line start_pos) (line end_pos)
 
 let main () =
   let load_univ p = 
-    let pre,univ,req = Cudf_parser.load p in
+    let _pre,univ,_req = Cudf_parser.load p in
     univ
   in
   let fail_parse source msg loc =
@@ -92,7 +91,7 @@ let main () =
       let p = Cudf_parser.from_in_channel (open_in !cudf_arg) in
       eprintf "loading CUDF ...\n%!";
       (match Cudf_parser.load p with
-	 | pre, univ, None ->
+	 | _pre, _univ, None ->
              eprintf "Error: missing request description item.\n%!";
 	     exit (-1)
 	 | pre, univ, Some req -> cudf := Some (pre, univ, req))

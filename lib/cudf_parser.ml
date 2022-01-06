@@ -81,7 +81,7 @@ let loc_lookuper locs =
 let type_check_stanza ?locs stanza types =
   let lookup_loc =
     match locs with
-      | None -> (fun p -> dummy_loc)
+      | None -> (fun _p -> dummy_loc)
       | Some locs -> loc_lookuper locs in
   let typed_stanza =
     List.map
@@ -103,7 +103,7 @@ let type_check_stanza ?locs stanza types =
 	match value_of_typedecl ty1, List.mem_assoc name typed_stanza with
 	  | None, true -> defaults, missing             (* mandatory, present *)
 	  | None, false -> defaults, (name :: missing)  (* mandatory, missing *)
-	  | Some v, true -> defaults, missing           (* optional,  present *)
+	  | Some _v, true -> defaults, missing          (* optional,  present *)
 	  | Some v, false ->                            (* optional,  missing *)
 	    (name, v) :: defaults, missing)
       ([], []) types
@@ -211,8 +211,8 @@ let parse p =
   let pre, pkgs, req = ref None, ref [], ref None in
   let rec aux_pkg () =
     match parse_item' p with
-      | locs, `Package pkg -> pkgs := pkg :: !pkgs ; aux_pkg ()
-      | locs, `Request req' -> req := Some req'	(* stop recursion after req *)
+      | _locs, `Package pkg -> pkgs := pkg :: !pkgs ; aux_pkg ()
+      | _locs, `Request req' -> req := Some req'	(* stop recursion after req *)
       | locs, `Preamble pre ->
 	  parse_error (loc_lookuper locs pre.preamble_id) "late preamble"
   in
