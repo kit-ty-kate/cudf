@@ -1,5 +1,4 @@
-_build/
-*.byte
-*.native
-cudf_822_parser.ml
-cudf_822_parser.mli
+/c-lib/_build
+/_opam/
+/_build/
+/cudf.install

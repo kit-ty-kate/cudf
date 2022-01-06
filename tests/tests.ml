@@ -17,7 +17,7 @@ open Printf
 open Cudf_types
 open Cudf
 
-let cudf_test_path name = sprintf "./tests/%s.cudf" name
+let cudf_test_path name = sprintf "./data/%s.cudf" name
 
 let good_cudfs = [	(* CUDF whose parsing must suceed *)
   "empty-vpkglist-default" ;

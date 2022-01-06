@@ -1,0 +1,22 @@
+opam-version: "2.0"
+license: "LGPL-3.0-or-later WITH OCaml-LGPL-linking-exception"
+maintainer: "roberto@dicosmo.org"
+authors: [
+  "Roberto di Cosmo <roberto@dicosmo.org>"
+  "Stefano Zacchiroli"
+  "Pietro Abate"
+]
+homepage: "http://www.mancoosi.org/cudf/"
+bug-reports: "https://gitlab.com/irill/cudf/-/issues"
+dev-repo: "git+https://gitlab.com/irill/cudf.git"
+build: ["dune" "build" "-p" name "-j" jobs]
+depends: [
+  "ocaml" {>= "4.02"}
+  "dune" {>= "2.0"}
+  ("extlib" | "extlib-compat")
+]
+synopsis: "CUDF library (part of the Mancoosi tools)"
+description: """
+CUDF (for Common Upgradeability Description Format) is a format for
+describing upgrade scenarios in package-based Free and Open Source
+Software distribution."""

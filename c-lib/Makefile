@@ -26,13 +26,13 @@ libcudf-opt.a: cudf-caml-opt.o cudf.o
 	cp $(OCAML_LIBDIR)/libasmrun.a $@
 	ar r $@ $^
 
-../_build/%:
-	cd .. && ocamlbuild $*
+_build/%:
+	ocamlbuild -package cudf $*
 
-cudf-caml.o: ../_build/cudf.cma ../_build/cudf_c.cmo
-	$(OCAMLC) -linkpkg -output-obj -o $@ $^
-cudf-caml-opt.o: ../_build/cudf.cmxa ../_build/cudf_c.cmx
-	$(OCAMLOPT) -linkpkg -output-obj -o $@ $^
+cudf-caml.o: _build/cudf_c.cmo
+	$(OCAMLC) -package cudf -linkpkg -output-obj -o $@ $^
+cudf-caml-opt.o: _build/cudf_c.cmx
+	$(OCAMLOPT) -package cudf -linkpkg -output-obj -o $@ $^
 
 cudf.o: cudf.c cudf.h cudf-variants.h
 
@@ -45,8 +45,8 @@ c-test-opt: c-test.o libcudf-opt.a
 	$(CC) $(PROG_CFLAGS) -o $@ $(INCLUDES) $(CUDF_LDFLAGS) $< \
 		$(subst -lcudf,-lcudf-opt,$(CUDF_CLIBS))
 
-test: ../tests/legacy.cudf ../tests/legacy-sol.cudf c-test
-	./c-test ../tests/legacy.cudf ../tests/legacy-sol.cudf > /dev/null
+test: ../tests/data/legacy.cudf ../tests/data/legacy-sol.cudf c-test
+	./c-test ../tests/data/legacy.cudf ../tests/data/legacy-sol.cudf > /dev/null
 
 cudf.pc: cudf.pc.in
 	cat $< | sed -e "s,@OCAMLLIBDIR@,$(OCAMLLIBDIR),g" \
