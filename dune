@@ -24,6 +24,7 @@
 (tests
  (names test)
  (modules test tests)
+ (deps (source_tree tests))
  (libraries cudf oUnit))
 
 (dirs :standard \ c-lib java-lib)
