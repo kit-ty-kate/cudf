@@ -1,0 +1,31 @@
+(library
+ (public_name cudf)
+ (wrapped false)
+ (modules
+  cudf
+  cudf_printer
+  cudf_c
+  cudf_types
+  cudf_checker
+  cudf_types_pp
+  cudf_conf
+  main_cudf_check
+  cudf_parser
+  main_cudf_parse_822
+  cudf_822_lexer
+  cudf_822_parser
+  cudf_type_lexer
+  cudf_type_parser)
+ (flags :standard -w -A)
+ (libraries extlib))
+
+(ocamllex cudf_822_lexer cudf_type_lexer)
+(ocamlyacc cudf_822_parser cudf_type_parser)
+
+;(tests
+; (names test tests)
+; (modules test tests)
+; (flags :standard -w -A)
+; (libraries cudf oUnit))
+
+(dirs :standard \ c-lib java-lib)
