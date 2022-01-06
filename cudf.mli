@@ -63,9 +63,14 @@ type preamble = {
   req_checksum: string ;	(** request checksum *)
 }
 
-val default_preamble : preamble	(** implement preamble defaults *)
-val default_package : package	(** implement package defaults *)
-val default_request : request	(** implement request defaults *)
+val default_preamble : preamble
+(** implement preamble defaults *)
+
+val default_package : package
+(** implement package defaults *)
+
+val default_request : request
+(** implement request defaults *)
 
 (** {6 Syntactic CUDF representation} *)
 

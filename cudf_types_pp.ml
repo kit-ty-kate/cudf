@@ -22,7 +22,7 @@ let lexbuf_wrapper type_parser typ =
   fun s ->
     try
       type_parser Cudf_type_lexer.token_cudf (Lexing.from_string s)
-    with Cudf_types.Syntax_error (_msg, loc) ->
+    with Cudf_types.Syntax_error (_msg, _loc) ->
       raise (Type_error (typ, `String s))
 
 let lexbuf_wrapper' type_parser =
@@ -89,7 +89,7 @@ let parse_value ty s =
     | `Nat -> `Nat (parse_nat s)
     | `Bool -> `Bool (parse_bool s)
     | `String -> `String (parse_string s)
-    | `Enum l -> `Enum (l, parse_enum l s)
+    | `Enum l -> `Enum (l, parse_enum ~enums:l s)
     | `Pkgname -> `Pkgname (parse_pkgname s)
     | `Ident -> `Ident (parse_ident s)
     | `Vpkg -> `Vpkg (parse_vpkg s)
@@ -101,10 +101,10 @@ let parse_value ty s =
 
 (** Pretty printers *)
 
-let string_of_int = Pervasives.string_of_int
+let string_of_int = Pervasives.string_of_int [@ocaml.warning "-3"]
 let string_of_posint = string_of_int
 let string_of_nat = string_of_int
-let string_of_bool = Pervasives.string_of_bool
+let string_of_bool = Pervasives.string_of_bool [@ocaml.warning "-3"]
 
 let string_of_keep = function
     `Keep_version -> "version"
@@ -147,7 +147,7 @@ let string_of_list string_of_item sep l =
 let string_of_vpkglist = string_of_list string_of_vpkg " , "
 
 (** ASSUMPTION: formula is in CNF *)
-let rec string_of_vpkgformula = function
+let string_of_vpkgformula = function
   | [] -> "true!"
   | [ [] ] -> "false!"
   | [] :: _ ->

@@ -74,9 +74,11 @@ let (=%) pkg1 pkg2 =
 
 let (<%) pkg1 pkg2 =
   Pervasives.compare (pkg1.package, pkg1.version) (pkg2.package, pkg2.version)
+    [@ocaml.warning "-3"]
 
 let (>%) pkg1 pkg2 =
   Pervasives.compare (pkg2.package, pkg2.version) (pkg1.package, pkg1.version)
+    [@ocaml.warning "-3"]
 
 let default_preamble = {
   preamble_id = "" ;
@@ -238,7 +240,7 @@ let status univ =
   let univ' = empty_universe () in
   Hashtbl.iter
     (fun id pkg -> match pkg with
-    | { installed = true } ->
+    | { installed = true; _ } ->
       Hashtbl.add univ'.id2pkg id pkg;
       add_to_hash_list univ'.name2pkgs pkg.package pkg;
       expand_features pkg univ'.features
@@ -255,7 +257,7 @@ let lookup_packages ?(filter=None) univ pkgname =
       | Some _ as pred -> List.filter (fun p -> p.version |= pred) packages
 
 let get_installed univ pkgname =
-  List.filter (fun { installed = i } -> i) (lookup_packages univ pkgname)
+  List.filter (fun { installed = i; _ } -> i) (lookup_packages univ pkgname)
 
 let mem_installed ?(include_features = true) ?(ignore = fun _ -> false)
     univ (name, constr) =

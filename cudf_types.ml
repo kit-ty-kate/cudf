@@ -11,7 +11,6 @@
 (*****************************************************************************)
 
 open ExtLib
-open Printf
 
 type version = int
 type relop = [`Eq|`Neq|`Geq|`Gt|`Leq|`Lt]
@@ -128,20 +127,20 @@ let value_of_typedecl = function
   | _ -> None
 
 let type_of_value = function
-  | `Int n -> `Int
-  | `Posint n -> `Posint
-  | `Nat n -> `Nat
-  | `Bool b -> `Bool
-  | `String s -> `String
-  | `Pkgname s -> `Pkgname
-  | `Ident s -> `Ident
-  | `Enum (enums, s) -> `Enum enums
-  | `Vpkg p -> `Vpkg
-  | `Vpkgformula f -> `Vpkgformula
-  | `Vpkglist l -> `Vpkglist
-  | `Veqpkg p -> `Veqpkg
-  | `Veqpkglist l -> `Veqpkglist
-  | `Typedecl l -> `Typedecl
+  | `Int _n -> `Int
+  | `Posint _n -> `Posint
+  | `Nat _n -> `Nat
+  | `Bool _b -> `Bool
+  | `String _s -> `String
+  | `Pkgname _s -> `Pkgname
+  | `Ident _s -> `Ident
+  | `Enum (enums, _s) -> `Enum enums
+  | `Vpkg _p -> `Vpkg
+  | `Vpkgformula _f -> `Vpkgformula
+  | `Vpkglist _l -> `Vpkglist
+  | `Veqpkg _p -> `Veqpkg
+  | `Veqpkglist _l -> `Veqpkglist
+  | `Typedecl _l -> `Typedecl
 
 let rec cast typ v =
   let type_error () = raise (Type_error (typ, v, dummy_loc)) in
@@ -192,7 +191,7 @@ let rec cast typ v =
     | typ, v when type_of_value v = typ -> v	(* identity cast *)
     | _ -> type_error ()
 
-let rec is_eq_formula f =
+let is_eq_formula f =
   not (List.exists
 	 (fun vpkgs ->
 	    List.exists

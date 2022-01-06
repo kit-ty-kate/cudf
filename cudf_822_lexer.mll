@@ -17,7 +17,7 @@
   open Cudf_822_parser
 
   let get_range { Lexing.lex_start_p = start_pos;
-		  Lexing.lex_curr_p = end_pos } =
+		  Lexing.lex_curr_p = end_pos; _ } =
     (start_pos, end_pos)
 
   (* Lexing.new_line is only available in OCaml 3.11 or greater *)
