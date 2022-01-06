@@ -22,10 +22,10 @@
 (ocamllex cudf_822_lexer cudf_type_lexer)
 (ocamlyacc cudf_822_parser cudf_type_parser)
 
-;(tests
-; (names test tests)
-; (modules test tests)
-; (flags :standard -w -A)
-; (libraries cudf oUnit))
+(tests
+ (names test)
+ (modules test tests)
+ (flags :standard -w -A)
+ (libraries cudf oUnit))
 
 (dirs :standard \ c-lib java-lib)

@@ -125,7 +125,7 @@ let string_of_int_list l =
 (** {5 Test builders} *)
 
 let good_parse ~parse_fun name = TestCase (fun _ ->
-  assert_no_exn (fun () -> parse_test ~parse_fun name))
+  assert_no_exn (fun () -> ignore (parse_test ~parse_fun name)))
 
 let bad_parse ~parse_fun name (l1, l2) = TestCase (fun _ ->
   assert_raises'
@@ -136,7 +136,7 @@ let bad_parse ~parse_fun name (l1, l2) = TestCase (fun _ ->
 		  loc1.Lexing.pos_lnum = l1 && loc2.Lexing.pos_lnum = l2
 	      | _ -> false)
     ~exn:(Cudf_parser.Parse_error ("", dummy_loc))
-    (fun () -> parse_test ~parse_fun name))
+    (fun () -> ignore (parse_test ~parse_fun name)))
 
 let good_solution prob_name sol_name = TestCase (fun _ ->
   let (_,univ,req), sol = load_cudf_test prob_name, load_univ_test sol_name in
@@ -186,7 +186,7 @@ let value_parse_suite =
 		| Cudf_types_pp.Type_error _, Cudf_types_pp.Type_error _ -> true
 		| _ -> e1 = e2)
       ~exn:(Cudf_types_pp.Type_error (`Int, `Int ~-1))
-      (fun () -> Cudf_types_pp.parse_value typ s))
+      (fun () -> ignore (Cudf_types_pp.parse_value typ s)))
   in
   "value parsing" >::: [
     "good" >::: List.map value_parse_ok [
@@ -357,7 +357,7 @@ let value_pp_suite =
     ] ;
     "bad vpkgformula" >:: (fun () ->
       assert_exn (fun () -> (* should "assert false" *)
-	Cudf_types_pp.string_of_vpkgformula [ []; [] ]))
+	ignore (Cudf_types_pp.string_of_vpkgformula [ []; [] ])))
   ]
 
 let cudf_pp_suite =
