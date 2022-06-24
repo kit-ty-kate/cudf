@@ -15,8 +15,7 @@
 open Cudf
 
 let pkg_compare p1 p2 =
-  Pervasives.compare (p1.package, p1.version) (p2.package, p2.version)
-    [@ocaml.warning "-3"]
+  Stdlib.compare (p1.package, p1.version) (p2.package, p2.version)
 
 let string_of_packages pkgs =
   let o = IO.output_string () in

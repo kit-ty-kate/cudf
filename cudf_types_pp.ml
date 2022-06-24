@@ -101,10 +101,10 @@ let parse_value ty s =
 
 (** Pretty printers *)
 
-let string_of_int = Pervasives.string_of_int [@ocaml.warning "-3"]
+let string_of_int = Stdlib.string_of_int
 let string_of_posint = string_of_int
 let string_of_nat = string_of_int
-let string_of_bool = Pervasives.string_of_bool [@ocaml.warning "-3"]
+let string_of_bool = Stdlib.string_of_bool
 
 let string_of_keep = function
     `Keep_version -> "version"
