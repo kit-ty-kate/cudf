@@ -26,13 +26,15 @@ libcudf-opt.a: cudf-caml-opt.o cudf.o
 	cp $(OCAML_LIBDIR)/libasmrun.a $@
 	ar r $@ $^
 
-_build/%:
-	ocamlbuild -package cudf $*
+cudf_c.cmo: cudf_c.ml
+	$(OCAMLC) -linkpkg -I ../_build/install/default/lib/cudf/ ../_build/install/default/lib/cudf/cudf.cma $^
+cudf_c.cmx: cudf_c.ml
+	$(OCAMLOPT) -linkpkg -I ../_build/install/default/lib/cudf/ ../_build/install/default/lib/cudf/cudf.cmxa $^
 
-cudf-caml.o: _build/cudf_c.cmo
-	$(OCAMLC) -package cudf -linkpkg -output-obj -o $@ $^
-cudf-caml-opt.o: _build/cudf_c.cmx
-	$(OCAMLOPT) -package cudf -linkpkg -output-obj -o $@ $^
+cudf-caml.o: cudf_c.cmo
+	$(OCAMLC) -linkpkg -output-obj -o $@ ../_build/install/default/lib/cudf/cudf.cma $^
+cudf-caml-opt.o: cudf_c.cmx
+	$(OCAMLOPT) -linkpkg -output-obj -o $@ ../_build/install/default/lib/cudf/cudf.cmxa $^
 
 cudf.o: cudf.c cudf.h cudf-variants.h
 
