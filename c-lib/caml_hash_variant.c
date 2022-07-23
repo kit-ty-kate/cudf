@@ -10,6 +10,8 @@
 /*  library, see the COPYING file for more information.                      */
 /*****************************************************************************/
 
+#define CAML_NAME_SPACE
+
 #include <caml/mlvalues.h>
 #include <stdio.h>
 

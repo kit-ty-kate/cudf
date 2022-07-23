@@ -17,6 +17,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define CAML_NAME_SPACE
+
 #include <caml/alloc.h>
 #include <caml/callback.h>
 #include <caml/memory.h>
